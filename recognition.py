@@ -42,13 +42,13 @@ filename = './model_recognition.sav'
 model = pickle.load(open(filename, 'rb'))
 
 #### test performance ####
-result = pd.DataFrame([], columns=['path', 'gTruth', 'pred', 'editDistance'])
+# result = pd.DataFrame([], columns=['path', 'gTruth', 'pred', 'editDistance'])
+
 total_images = len(os.listdir(opt.dataPath))
 i = 2
 Dict = {}
 while (i <= total_images):
-    file = "output" + str(i)
-    print(opt.dataPath + '/' + file)
+    file = "output" + str(i) + ".jpg"
     img = cv2.imread(opt.dataPath + '/' + file)
     V = cv2.split(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))[2]
     T = threshold_local(V, 29, offset=15, method="gaussian")
@@ -131,14 +131,15 @@ while (i <= total_images):
     # print(rightplate_string)
     if (rightplate_string in Dict):
             Dict[rightplate_string] += 1
-    else:
+    elif (rightplate_string != ""):
         Dict[rightplate_string] = 1
 
     if (i % 15 == 0 or i == total_images):
         Keymax = max(zip(Dict.values(), Dict.keys()))[1]
-        print("LP Number: " + Keymax)
+        if (len(Keymax) > 3):
+          print("LP Number: " + Keymax)
         Dict = {}
-
+    i += 1
         # distance
 #         dist = editdistance.eval(gt, rightplate_string)
         

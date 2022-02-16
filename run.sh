@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+python video_preprocessing.py && python detect.py --weights best.pt --conf 0.4 --source ./output.avi --save-crop && python recognition.py --modelPath ./finalized_model.sav --dataPath ./runs/detect/exp/crops/license-plate --savePath ./results

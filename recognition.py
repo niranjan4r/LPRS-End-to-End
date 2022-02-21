@@ -9,6 +9,7 @@ from skimage.measure import regionprops
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import cv2
+from utils.validate_lp import validateLP
 from skimage.filters import threshold_otsu
 from skimage.filters import threshold_local
 from sklearn.metrics import accuracy_score
@@ -134,9 +135,10 @@ while (i <= total_images):
     elif (rightplate_string != ""):
         Dict[rightplate_string] = 1
 
-    if (i % 15 == 0 or i == total_images):
+    if ((i % 15 == 0 or i == total_images) and bool(Dict)):
         Keymax = max(zip(Dict.values(), Dict.keys()))[1]
         if (len(Keymax) > 3):
+          Keymax = validateLP(Keymax)
           print("LP Number: " + Keymax)
         Dict = {}
     i += 1
